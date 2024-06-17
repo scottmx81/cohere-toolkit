@@ -59,7 +59,7 @@ export const getReply = async ({
     prompt_truncation: 'AUTO_PRESERVE_ORDER',
   };
 
-  if (model && model !== "default") params.model = model;
+  if (model && model !== 'default') params.model = model;
   if (temperature) params.temperature = temperature;
   if (preambleOverride) params.preamble = preambleOverride;
   if (tools.length > 0) params.tools = tools;

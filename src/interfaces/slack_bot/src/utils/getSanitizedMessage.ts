@@ -9,7 +9,7 @@ type GetSanitizedMessageArgs = {
 
 /**
  * Replaces '@Mentions' and '<@mentions>' from strings with the user's real name fetched from Slack
- * Replaces channel links in the form of <#C04J5P41JSD|chat-interfaces> with channel names, i.e. #chat-interfaces
+ * Replaces channel links in the form of <#C0000ABC123|test-channel> with channel names, i.e. #test-channel
  * ex:
  *    input I, <@U0000000123>, am gonna have a chat with <@U0000000456> over in <#C000000ABC|command-slack-bot>
  *    output: I, John Doe, am gonna have a chat with Richard Roe over in #command-slack-bot
@@ -47,7 +47,7 @@ export const getSanitizedMessage = async ({
       msgWithMemberNames = msgWithMemberNames.replaceAll(`<@${key}>`, value);
     }
 
-  // Match the format <#C04J5P41JSD|chat-interfaces> and replace with #chat-interfaces
+  // Match the format <#C0000ABC123|test-channel> and replace with #test-channel
   const msgWithChannelNamesAndMemberNames = msgWithMemberNames.replace(/<#\w+\|([-\w]+)>/g, '#$1');
 
   const msgWithSlackFormatting = slackify(msgWithChannelNamesAndMemberNames);

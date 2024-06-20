@@ -16,8 +16,6 @@ export const summarize: Middleware<SlackCommandMiddlewareArgs> = async ({
 }) => {
   await ack();
   /**
-   * a slack thread link follows the structure:
-   * https://cohereai.slack.com/archives/C02L95WDEKA/p1675178802502139
    * Extracts the thread channel id and thread time-stamp from the link
    * channel -> C02L95WDEKA
    * thread_ts -> p1675178802502139 -> 1675178802.502139

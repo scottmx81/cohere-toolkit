@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   isRightPanelOpen: false,
   showSteps: true,
   isHotKeysDialogOpen: false,
+  enabledTools: [],
 };
 
 type State = {
@@ -14,6 +15,7 @@ type State = {
   isRightPanelOpen: boolean;
   showSteps: boolean;
   isHotKeysDialogOpen: boolean;
+  enabledTools: string[],
 };
 
 type Actions = {
@@ -22,6 +24,7 @@ type Actions = {
   setRightPanelOpen: (isOpen: boolean) => void;
   setShowSteps: (showSteps: boolean) => void;
   setIsHotKeysDialogOpen: (isOpen: boolean) => void;
+  setEnabledTools: (enabledTools: string[]) => void;
 };
 
 export type SettingsStore = State & Actions;
@@ -57,6 +60,12 @@ export const createSettingsSlice: StateCreator<SettingsStore, [], [], SettingsSt
     set((state) => ({
       ...state,
       isHotKeysDialogOpen: isOpen,
+    }));
+  },
+  setEnabledTools(enabledTools: string[]) {
+    set((state) => ({
+      ...state,
+      enabledTools: enabledTools,
     }));
   },
   ...INITIAL_STATE,

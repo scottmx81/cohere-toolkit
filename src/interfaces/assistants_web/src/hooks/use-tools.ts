@@ -7,8 +7,7 @@ import { AgentPublic, ApiError, ToolDefinition, useCohereClient } from '@/cohere
 import { BACKGROUND_TOOLS, TOOL_GOOGLE_DRIVE_ID } from '@/constants';
 import { env } from '@/env.mjs';
 import { useNotify } from '@/hooks';
-import { useParamsStore } from '@/stores';
-import { ConfigurableParams } from '@/stores/slices/paramsSlice';
+import { useSettingsStore } from '@/stores';
 
 export const useListTools = (enabled: boolean = true) => {
   const client = useCohereClient();
@@ -91,9 +90,7 @@ export const useAvailableTools = ({
   const requiredTools = agent?.tools;
 
   const { data: tools } = useListTools();
-  const { params, setParams } = useParamsStore();
-  const { tools: paramTools } = params;
-  const enabledTools = paramTools ?? [];
+  const { enabledTools, setEnabledTools } = useSettingsStore();
 
   const unauthedTools =
     tools?.filter(
@@ -110,13 +107,18 @@ export const useAvailableTools = ({
   }, [allTools, requiredTools]);
 
   const handleToggle = (name: string, checked: boolean) => {
-    const newParams: Partial<ConfigurableParams> = {
-      tools: checked
-        ? [...enabledTools, { name }]
-        : enabledTools.filter((enabledTool) => enabledTool.name !== name),
-    };
+    let updatedEnabledTools = [...enabledTools];
+    const key = `${agent?.id}_${name}`;
 
-    setParams(newParams);
+    if (checked) {
+      if (!enabledTools.includes(key)) {
+        updatedEnabledTools.push(key);
+      }
+    } else {
+      updatedEnabledTools = updatedEnabledTools.filter(item => item !== key)
+    }
+
+    setEnabledTools(updatedEnabledTools)
   };
 
   return {

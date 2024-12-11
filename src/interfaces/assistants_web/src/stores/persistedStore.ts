@@ -57,6 +57,8 @@ export const useSettingsStore = () => {
       setShowSteps: state.setShowSteps,
       isHotKeysDialogOpen: state.isHotKeysDialogOpen,
       setIsHotKeysDialogOpen: state.setIsHotKeysDialogOpen,
+      enabledTools: state.enabledTools,
+      setEnabledTools: state.setEnabledTools,
     }),
     shallow
   );

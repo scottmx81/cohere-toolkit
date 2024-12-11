@@ -6,7 +6,7 @@ import { AgentPublic, ToolDefinition } from '@/cohere-client';
 import { WelcomeGuideTooltip } from '@/components/MessagingContainer';
 import { Button, Icon, Text, ToggleCard } from '@/components/UI';
 import { useAvailableTools } from '@/hooks';
-import { useParamsStore } from '@/stores';
+import { useSettingsStore } from '@/stores';
 import { cn, getToolIcon } from '@/utils';
 
 /**
@@ -17,10 +17,8 @@ export const AssistantTools: React.FC<{
   agent?: AgentPublic;
   className?: string;
 }> = ({ tools, agent, className = '' }) => {
-  const {
-    params: { tools: paramTools },
-  } = useParamsStore();
-  const enabledTools = paramTools ?? [];
+  const { enabledTools } = useSettingsStore();
+
   const { availableTools, unauthedTools, handleToggle } = useAvailableTools({
     agent,
     allTools: tools,
@@ -39,8 +37,8 @@ export const AssistantTools: React.FC<{
         {availableTools.length > 0 && (
           <div className="flex flex-col gap-y-3">
             {availableTools.map(({ name, display_name, description, error_message }) => {
-              const enabledTool = enabledTools.find((enabledTool) => enabledTool.name === name);
-              const checked = !!enabledTool;
+              const enabledKey = `${agent?.id}_${name}`;
+              const checked = agent?.id && name ? enabledTools.includes(enabledKey) : false;
 
               return (
                 <ToggleCard
